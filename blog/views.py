@@ -1,19 +1,22 @@
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post
+from django.utils import timezone
 
 def index_view(request):
-    posts = Post.objects.filter(status = 1)
+    posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
     context = {
         'posts': posts,
     }
     return render(request,'blog/blog-home.html',context)
 
-def single_view(request):
-    return render(request,'blog/blog-single.html')
-
-def test_view(request,id):
-    posts = get_object_or_404(Post,id=id)
+def single_view(request,pid):
+    posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
+    post = get_object_or_404(posts,id=pid)
+    post.views += 1
+    post.save()
     context = {
-        'posts': posts,
+        'post' : post,
     }
-    return render(request, 'blog/test.html',context)
+    return render(request,'blog/blog-single.html',context)
+
+
