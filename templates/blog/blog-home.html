@@ -92,14 +92,14 @@
 				<div class="single-post row">
 					<div class="col-lg-3  col-md-3 meta-details">
 						<ul class="tags">
-							
-							<li><a href="#">{{post.category.all|join:", "}}</a></li>
-							
+							{% for cat in post.category.all %}
+							<li><a href="#">{{cat}}</a>{% if not forloop.last %},{% endif %}</li>
+							{% endfor %}
 						</ul>
 						<div class="user-details row">
 							<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author.get_full_name}}</a>
 								<span class="lnr lnr-user"></span></p>
-							<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date}}</a> <span
+							<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"D d/M/y"}}</a> <span
 									class="lnr lnr-calendar-full"></span></p>
 							<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.views}} Views</a> <span
 									class="lnr lnr-eye"></span></p>
@@ -115,7 +115,7 @@
 							<h3>{{post.title}}</h3>
 						</a>
 						<p class="excert">
-							{{post.content}}
+							{{post.content|truncatewords:30}}
 						</p>
 						<a href="{% url 'blog:single' pid=post.id %}" class="primary-btn">View More</a>
 					</div>

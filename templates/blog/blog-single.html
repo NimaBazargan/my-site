@@ -24,39 +24,47 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 posts-list">
-				<div class="single-post row">
+				<div class="single-post row m-0">
 					<div class="col-lg-12">
 						<div class="feature-img">
 							<img class="img-fluid" src="{{post.image.url}}" alt="">
 						</div>
 					</div>
-					<div class="col-lg-3  col-md-3 meta-details">
-						<ul class="tags">
-							<li><a href="#">{{post.category.all|join:", "}}</a></li>
-						</ul>
+					<div class="col-lg-12  meta-details">
 						<div class="user-details row">
-							<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author.get_full_name}}</a> <span
+							<p class="user-name col-lg-3 col-sm-6"><a href="#">{{post.author.get_full_name}}</a> <span
 									class="lnr lnr-user"></span></p>
-							<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"M d"}}</a> <span
-									class="lnr lnr-calendar-full"></span></p>
-							<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.views}} views</a> <span
+							<p class="date col-lg-3 col-sm-6"><a href="#">{{post.published_date|date:"D d/M/y"}}</a>
+								<span class="lnr lnr-calendar-full"></span></p>
+							<p class="view col-lg-3 col-sm-6"><a href="#">{{post.views}} views</a> <span
 									class="lnr lnr-eye"></span></p>
-							<p class="comments col-lg-12 col-md-12 col-6"><a href="#">06 Comments</a> <span
+							<p class="comments col-lg-3 col-sm-6"><a href="#">06 Comments</a> <span
 									class="lnr lnr-bubble"></span></p>
-							<ul class="social-links col-lg-12 col-md-12 col-6">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-github"></i></a></li>
-								<li><a href="#"><i class="fa fa-behance"></i></a></li>
-							</ul>
 						</div>
 					</div>
-					<div class="col-lg-9 col-md-9">
-						<h3 class="mt-20 mb-20">{{post.title}}</h3>
-						<p class="excert">
-							{{post.content}}
-						</p>
-					</div>
+					
+						<div class="col-lg-12  col-md-9 mt-0 mb-10 navigation-area">
+							<h3 class="mt-0 mb-20">{{post.title}}</h3>
+							<p class="excert">
+								{{post.content|linebreaks}}
+							</p>
+						</div>
+						<div class="col-lg-12  meta-details">
+							<div class="d-flex justify-content-between align-items-end">
+								<ul class="social-links d-inline">
+									<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+									<li><a href="#"><i class="fa fa-github"></i></a></li>
+									<li><a href="#"><i class="fa fa-behance"></i></a></li>
+								</ul>
+							<ul class="tags d-inline mb-2">
+									{% for cat in post.category.all %}
+									<li><a href="#">{{cat}}</a>{% if not forloop.last %},{% endif %}</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					
 				</div>
 				<div class="navigation-area">
 					<div class="row">
@@ -64,10 +72,13 @@
 						<div
 							class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
 							<div class="thumb">
-								<a href="{% url 'blog:single' pid=prev_post.id %}"><img style="width: 60px; height: 60px;" class="img-fluid" src="{{prev_post.image.url}}" alt=""></a>
+								<a href="{% url 'blog:single' pid=prev_post.id %}"><img
+										style="width: 60px; height: 60px;" class="img-fluid"
+										src="{{prev_post.image.url}}" alt=""></a>
 							</div>
 							<div class="arrow">
-								<a href="{% url 'blog:single' pid=prev_post.id %}"><span class="lnr text-white lnr-arrow-left"></span></a>
+								<a href="{% url 'blog:single' pid=prev_post.id %}"><span
+										class="lnr text-white lnr-arrow-left"></span></a>
 							</div>
 							<div class="detials">
 								<p>Prev Post</p>
@@ -87,10 +98,13 @@
 								</a>
 							</div>
 							<div class="arrow">
-								<a href="{% url 'blog:single' pid=next_post.id %}"><span class="lnr text-white lnr-arrow-right"></span></a>
+								<a href="{% url 'blog:single' pid=next_post.id %}"><span
+										class="lnr text-white lnr-arrow-right"></span></a>
 							</div>
 							<div class="thumb">
-								<a href="{% url 'blog:single' pid=next_post.id %}"><img style="width: 60px;height: 60px;" class="img-fluid" src="{{next_post.image.url}}" alt=""></a>
+								<a href="{% url 'blog:single' pid=next_post.id %}"><img
+										style="width: 60px;height: 60px;" class="img-fluid"
+										src="{{next_post.image.url}}" alt=""></a>
 							</div>
 						</div>
 						{% endif %}
