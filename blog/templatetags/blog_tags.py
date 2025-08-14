@@ -2,6 +2,7 @@ from django import template
 from blog.models import Post
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from datetime import datetime
 
 register = template.Library()
 
@@ -25,8 +26,6 @@ def show_prev_next(pid):
     else:
         next_post = list(posts)[0]
     context = {
-        'post' : post,
-        'posts' : posts,
         'index': index,
         'len_list': len_list,
         'prev_post': prev_post,
@@ -34,5 +33,39 @@ def show_prev_next(pid):
     }
     return context
 
+@register.inclusion_tag('blog/blog-popular-post.html')
+def popular_post(arg=3):
+    posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
+    posts = posts.order_by("-views")[:arg]
+    context = {
+        'posts': posts,
+    }
+    return context
 
-
+@register.simple_tag(name='time')
+def function(pid):
+    post = Post.objects.get(id=pid)
+    current_time = timezone.now() - post.published_date
+    status = 0
+    if current_time.days < 1:
+        if current_time.seconds < 3600:
+            if current_time.seconds < 60:
+                return f"{current_time.seconds} Seconds ago"
+            else:
+                return f"{int(current_time.seconds/60)} Minutes ago"
+        else:
+            return f"{int(current_time.seconds/3600)} Hours ago"
+    if current_time.days < 31:
+        if timezone.now().month == post.published_date.month:
+            return f"{current_time.days} Days ago"
+        else:
+            if timezone.now().day < post.published_date.day:
+                return f"{current_time.days} Days ago"
+    if current_time.days < 366 :
+        if not (timezone.now().month == post.published_date.month and timezone.now().day == post.published_date.day):
+            now = post.published_date.date()
+            return now.strftime("%d %b")
+        else:
+            return post.published_date.strftime("%d %b %y")
+    else:
+        return post.published_date.strftime("%d %b %y")
