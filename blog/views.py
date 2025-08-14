@@ -2,8 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from blog.models import Post
 from django.utils import timezone
 
-def index_view(request):
+def index_view(request,name=None):
     posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
+    if name:
+        posts = posts.filter(category__name= name)
     context = {
         'posts': posts,
     }
