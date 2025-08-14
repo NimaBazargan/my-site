@@ -1,5 +1,5 @@
 from django import template
-from blog.models import Post
+from blog.models import Post, Category
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import datetime
@@ -69,3 +69,12 @@ def function(pid):
             return post.published_date.strftime("%d %b %y")
     else:
         return post.published_date.strftime("%d %b %y")
+    
+@register.inclusion_tag('blog/blog-category.html')
+def post_categories():
+    posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
+    categories = Category.objects.all()
+    cat_dict = {}
+    for name in categories:
+        cat_dict[name] = posts.filter(category=name).count()
+    return {'categories':cat_dict}
