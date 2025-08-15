@@ -9,7 +9,7 @@
                 <img class="img-fluid" src="{{post.image.url}}" alt="">
             </div>
             <div class="details">
-                <a href="#">
+                <a href="{% url 'blog:single' pid=post.id %}">
                     <h6>{{post.title}}</h6>
                 </a>
                 <p>{% time pid=post.id %}</p>
