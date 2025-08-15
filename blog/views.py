@@ -2,10 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from blog.models import Post
 from django.utils import timezone
 
-def index_view(request,name=None):
+def index_view(request,**kwargs):
     posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
-    if name:
-        posts = posts.filter(category__name= name)
+    if kwargs.get('cat_name'):
+        posts = posts.filter(category__name = kwargs['cat_name'])
+    if kwargs.get('author_username'):
+        posts = posts.filter(author__username = kwargs['author_username'])
     context = {
         'posts': posts,
     }
