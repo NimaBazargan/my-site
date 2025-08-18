@@ -1,5 +1,5 @@
 from django import template
-from blog.models import Post, Category, Tag
+from blog.models import Post, Category
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import datetime
@@ -79,7 +79,7 @@ def post_categories():
         cat_dict[name] = posts.filter(category=name).count()
     return {'categories':cat_dict}
 
-@register.inclusion_tag('blog/blog-tag.html')
-def post_tags():
-    tags = Tag.objects.all()
-    return {'tags':tags}
+# @register.inclusion_tag('blog/blog-tag.html')
+# def post_tags():
+#     tags = Tag.objects.all()
+#     return {'tags':tags}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -8,11 +9,11 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
-class Tag(models.Model):
-    name = models.CharField(max_length=255)
+# class Tag(models.Model):
+#     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
@@ -22,7 +23,7 @@ class Post(models.Model):
     author = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     published_date = models.DateTimeField(null=True)
     views = models.BigIntegerField(default=0)
-    tag = models.ManyToManyField(Tag)
+    tag = TaggableManager()
     status = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

@@ -1,16 +1,18 @@
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post
+from taggit.models import Tag
 from django.utils import timezone
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 def index_view(request,**kwargs):
     posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
+    tags = Tag.objects.all()
     if kwargs.get('cat_name'):
         posts = posts.filter(category__name = kwargs['cat_name'])
     if kwargs.get('author_username'):
         posts = posts.filter(author__username = kwargs['author_username'])
     if kwargs.get('tag_name'):
-        posts = posts.filter(tag__name = kwargs['tag_name'])
+        posts = posts.filter(tag__name__in = [kwargs['tag_name']])
     if request.method == 'GET':
         if q := request.GET.get('q'):
             posts = posts.filter(content__contains = q)
@@ -24,14 +26,17 @@ def index_view(request,**kwargs):
         posts = posts.page(posts.num_pages)
     context = {
         'posts': posts,
+        'tags': tags,
     }
     return render(request,'blog/blog-home.html',context)
 
 def single_view(request,pid):
     posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
     post = get_object_or_404(posts,id=pid)
+    tags = Tag.objects.all()
     context = {
         'post' : post,
+        'tags': tags,
     }
     return render(request,'blog/blog-single.html',context)
 
