@@ -7,10 +7,10 @@ class PostAdmin(admin.ModelAdmin):
     empty_value_display = '-empty-'
     # fields = ('title',)
     # exclude = ('title',)
-    list_display = ('title' ,'author','views','status','published_date','created_date')
-    list_filter = ('status','author',)
+    list_display = ['title' ,'author','views','status','published_date','created_date',]
+    list_filter = ['status','author',]
     # ordering = ['created_date']
-    search_fields = ['title','content']
+    search_fields = ['title','content',]
 
 admin.site.register(Post,PostAdmin)
 admin.site.register(Category)

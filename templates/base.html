@@ -4,7 +4,7 @@
 
 	<head>
 		<!-- Mobile Specific Meta -->
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 		<!-- Favicon-->
 		<link rel="shortcut icon" href='{% static "img/fav.png" %}'>
 		<!-- Author Meta -->
@@ -32,6 +32,8 @@
 		<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
 		<link rel="stylesheet" href="{% static 'css/main.css' %}">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+			integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	</head>
 
 	<body>
@@ -82,9 +84,12 @@
 					</nav><!-- #nav-menu-container -->
 				</div>
 			</div>
+			{% include 'messages.html' %}
 		</header><!-- #header -->
+		
 		{% block content %}
 		{% endblock %}
+		
 		<!-- start footer Area -->
 		<footer class="footer-area section-gap">
 			<div class="container">
@@ -131,14 +136,14 @@
 								output.
 							</p>
 							<div>
-								<form target="_blank"
-									action="{% url 'website:newsletter' %}"
-									method="post" class="subscription relative">
+								<form target="_blank" action="{% url 'website:newsletter' %}" method="post"
+									class="subscription relative">
 									{% csrf_token %}
 									<div class="input-group d-flex flex-row">
 										<input name="email" placeholder="Email Address" onfocus="this.placeholder = ''"
 											onblur="this.placeholder = 'Email Address '" required="" type="email">
-										<button type="submit" class="btn bb-btn"><span class="lnr lnr-location"></span></button>
+										<button type="submit" class="btn bb-btn"><span
+												class="lnr lnr-location"></span></button>
 									</div>
 									<div class="mt-10 info"></div>
 								</form>
@@ -196,6 +201,15 @@
 		<script src='{% static "js/owl.carousel.min.js" %}'></script>
 		<script src='{% static "js/mail-script.js" %}'></script>
 		<script src='{% static "js/main.js" %}'></script>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+			integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+		</script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+			integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+		</script>
 	</body>
 
 	</html>

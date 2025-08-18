@@ -13,7 +13,10 @@ def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            modify_name = 'unknown'
+            my_model = form.save(commit=False)
+            my_model.name = modify_name
+            my_model.save()
             messages.add_message(request,messages.SUCCESS,'success')
         else:
             messages.add_message(request,messages.ERROR,'error') 
