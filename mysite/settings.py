@@ -41,30 +41,33 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'multi_captcha_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'robots',
     'debug_toolbar',
     'taggit',
+    'captcha',
     'django_summernote',
     'website.apps.WebsiteConfig',
     'blog.apps.BlogConfig',
 ]
 
-#sites framework
+# sites framework
 SITE_ID = 2
 
-#robots
+# robots
 ROBOTS_USE_HOST = False
 ROBOTS_USE_SITEMAP = False
 
-#summernote configs
+# summernote configs
 SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
     # Using SummernoteWidget - iframe mode, default
@@ -94,6 +97,10 @@ SUMMERNOTE_CONFIG = {
         ],
     }}
 
+# captcha admin settings
+MULTI_CAPTCHA_ADMIN = {
+    'engine': 'simple-captcha',
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

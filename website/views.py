@@ -20,8 +20,9 @@ def contact_view(request):
             messages.add_message(request,messages.SUCCESS,'success')
         else:
             messages.add_message(request,messages.ERROR,'error') 
-    form = ContactForm()       
-    return render(request,'website/contact.html')
+    else:        
+        form = ContactForm()       
+    return render(request,'website/contact.html',{'form':form})
 
 def newsletter_view(request):
     if request.method == 'POST':
