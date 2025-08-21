@@ -101,6 +101,7 @@ SUMMERNOTE_CONFIG = {
 MULTI_CAPTCHA_ADMIN = {
     'engine': 'simple-captcha',
 }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -33,7 +33,7 @@
                             <h4 class="title">{{post.title}}</h4>
                         </a>
                         <p>
-                            {{post.content|truncatewords:10}}
+                            {{post.content|truncatewords:10|safe}}
                         </p>
                         <h6 class="date">{% time pid=post.id %}</h6>
                     </div>

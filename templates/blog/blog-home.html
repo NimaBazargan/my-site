@@ -117,7 +117,7 @@
 							<h3>{{post.title}}</h3>
 						</a>
 						<p class="excert">
-							{{post.content|truncatewords:30}}
+							{{post.content|truncatewords:30|safe}}
 						</p>
 						<a href="{% url 'blog:single' pid=post.id %}" class="primary-btn">View More</a>
 					</div>

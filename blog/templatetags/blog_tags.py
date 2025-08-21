@@ -1,5 +1,5 @@
 from django import template
-from blog.models import Post, Category
+from blog.models import Post, Category, Comment
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import datetime
@@ -46,7 +46,6 @@ def popular_post(arg=3):
 def function(pid):
     post = Post.objects.get(id=pid)
     current_time = timezone.now() - post.published_date
-    status = 0
     if current_time.days < 1:
         if current_time.seconds < 3600:
             if current_time.seconds < 60:
@@ -78,6 +77,33 @@ def post_categories():
     for name in categories:
         cat_dict[name] = posts.filter(category=name).count()
     return {'categories':cat_dict}
+
+@register.simple_tag(name='timecomment')
+def function(pid):
+    comment = Comment.objects.get(id=pid)
+    current_time = timezone.now() - comment.created_date
+    if current_time.days < 1:
+        if current_time.seconds < 3600:
+            if current_time.seconds < 60:
+                return f"{current_time.seconds} Seconds ago"
+            else:
+                return f"{int(current_time.seconds/60)} Minutes ago"
+        else:
+            return f"{int(current_time.seconds/3600)} Hours ago"
+    if current_time.days < 31:
+        if timezone.now().month == comment.created_date.month:
+            return f"{current_time.days} Days ago"
+        else:
+            if timezone.now().day < comment.created_date.day:
+                return f"{current_time.days} Days ago"
+    if current_time.days < 366 :
+        if not (timezone.now().month == comment.created_date.month and timezone.now().day == comment.created_date.day):
+            now = comment.created_date.date()
+            return now.strftime("%d %b")
+        else:
+            return comment.created_date.strftime("%d %b %y")
+    else:
+        return comment.created_date.strftime("%d %b %y")
 
 # @register.inclusion_tag('blog/blog-tag.html')
 # def post_tags():

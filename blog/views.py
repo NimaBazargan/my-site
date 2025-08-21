@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post
+from blog.models import Post, Comment
 from taggit.models import Tag
 from django.utils import timezone
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from blog.forms import CommentForm
+from django.contrib import messages
 
 def index_view(request,**kwargs):
     posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
@@ -34,9 +36,21 @@ def single_view(request,pid):
     posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
     post = get_object_or_404(posts,id=pid)
     tags = Tag.objects.all()
+    comments = Comment.objects.filter(post=pid, approved=True)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'success')
+        else:
+            messages.add_message(request,messages.ERROR,'error')
+    else:
+        form = CommentForm()
     context = {
         'post' : post,
         'tags': tags,
+        'comments': comments,
+        'form':form,
     }
     return render(request,'blog/blog-single.html',context)
 
