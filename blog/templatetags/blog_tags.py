@@ -104,6 +104,12 @@ def function(pid):
             return comment.created_date.strftime("%d %b %y")
     else:
         return comment.created_date.strftime("%d %b %y")
+    
+@register.simple_tag(name="comment_count")
+def function(pid):
+    comment_count = Comment.objects.filter(post=pid,approved=True).count()
+    return comment_count
+
 
 # @register.inclusion_tag('blog/blog-tag.html')
 # def post_tags():
