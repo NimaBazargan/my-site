@@ -43,8 +43,13 @@
 					<div class="row align-items-center">
 						<div class="col-lg-6 col-sm-6 col-6 header-top-left">
 							<ul>
-								<li><a href="#">Visit Us</a></li>
-								<li><a href="#">Buy Tickets</a></li>
+								{% if request.user.is_authenticated %}
+								<li><a href="#">Logged in as {{request.user.username}}</a></li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+								{% else %}
+								<li><a href="{% url 'login' %}">Login</a></li>
+								<li><a href="{% url 'signup' %}">Signup</a></li>
+								{% endif %}
 							</ul>
 						</div>
 						<div class="col-lg-6 col-sm-6 col-6 header-top-right">
@@ -80,6 +85,7 @@
 								</ul>
 							</li>
 							<li><a href="{% url 'website:contact' %}">Contact</a></li>
+								<li><a href="{% url 'profile' %}">Profile</a></li>
 						</ul>
 					</nav><!-- #nav-menu-container -->
 				</div>
@@ -142,6 +148,8 @@
 									<div class="input-group d-flex flex-row">
 										<input name="email" placeholder="Email Address" onfocus="this.placeholder = ''"
 											onblur="this.placeholder = 'Email Address '" required="" type="email">
+										<input type="hidden" name="next"
+											value="{{request.path}}">
 										<button type="submit" class="btn bb-btn"><span
 												class="lnr lnr-location"></span></button>
 									</div>

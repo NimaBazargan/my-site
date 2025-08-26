@@ -110,6 +110,11 @@ def function(pid):
     comment_count = Comment.objects.filter(post=pid,approved=True).count()
     return comment_count
 
+@register.inclusion_tag('blog/show-reply.html')
+def show_reply(cid):
+    comments = Comment.objects.filter(parent=cid,approved=True)
+    return {'comments':comments}
+
 
 # @register.inclusion_tag('blog/blog-tag.html')
 # def post_tags():

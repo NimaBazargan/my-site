@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- start banner Area -->
+<section class="relative about-banner">
+	<div class="overlay overlay-bg"></div>
+	<div class="container">
+		<div class="row d-flex align-items-center justify-content-center">
+			<div class="about-content col-lg-12">
+				<h1 class="text-white">
+					Profile
+				</h1>
+				<p class="text-white link-nav"><a href="{% url 'website:index' %}">Home </a> <span
+						class="lnr lnr-arrow-right"></span>
+					<a href="{% url 'profile' %}"> Profile</a></p>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End banner Area -->
+
+<!-- Start contact-page Area -->
+<section class="contact-page-area section-gap">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<form class="form-areat" action="{% url 'profile' %}" method="post">
+					<div class="row">
+						{% csrf_token %}
+						<div class="col-lg-6 form-group">
+							<lable>First Name:</lable>
+							<input name="first_name" placeholder="Enter your fisrt name" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Enter your first name'" class="common-input mb-20 form-control"
+								required="" type="text" value="{{request.user.first_name}}">
+                            
+							<lable>Last Name:</lable>
+                            <input name="last_name" placeholder="Enter your last name" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Enter your last name'" class="common-input mb-20 form-control"
+								required="" type="text" value="{{request.user.last_name}}">
+							
+							<lable>Email:</lable>
+							<input name="email" placeholder="Enter email address"
+								pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'"
+								class="common-input mb-20 form-control" required="" type="email" value="{{request.user.email}}">
+
+							<lable>Username:</lable>
+							<input name="username" placeholder="Enter your username" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Enter your username'" class="common-input mb-20 form-control"
+								required="" type="text" class="form-control" value="{{request.user.username}}">
+
+							<lable>Password:</lable>
+                            <input name="password" placeholder="Enter your password" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Enter your password'" class="common-input mb-20 form-control"
+								required="" type="password" class="form-control" value="{{request.user.password}}">
+						</div>
+						<div class="col-lg-12">
+							<div class="alert-msg" style="text-align: left;"></div>
+							<button type="submit" class="genric-btn primary" style="float: right;">Change</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End contact-page Area -->
+{% endblock %}

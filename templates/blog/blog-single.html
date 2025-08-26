@@ -76,6 +76,7 @@
 				<div class="comments-area" id="comment">
 					<h4>{{comments|length}} Comments</h4>
 					{% for comment in comments %}
+					{% if not comment.parent %}
 					<div class="comment-list">
 						<div class="single-comment justify-content-between d-flex">
 							<div class="user justify-content-between d-flex">
@@ -83,53 +84,33 @@
 									<img style="width: 60px;height: 60px;" src="{% static 'img/unknown.jpg' %}" alt="">
 								</div>
 								<div class="desc">
-									<h5><a href="#">{{comment.name}}</a></h5>
-									<p class="date">{% timecomment pid=comment.id %} </p>
+									<h5><a href="#">{{comment.name.get_full_name}}</a></h5>
+									<p class="date">{% timecomment pid=comment.id %}</p>
 									<p class="comment">
 										{{comment.message}}
 									</p>
 								</div>
 							</div>
-							<!-- <div class="reply-btn">
-								<a href="" class="btn-reply text-uppercase">reply</a>
-							</div> -->
+							<div class="reply-btn">
+									<a href="{% url 'blog:reply' pid=post.id cid=comment.id %}#entercomment" class="btn-reply text-uppercase">reply</a>
+							</div>
 						</div>
 					</div>
-					<!-- <div class="comment-list left-padding">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="{% static 'img/blog/c2.jpg' %}" alt="">
-								</div>
-								<div class="desc">
-									<h5><a href="#">Elsie Cunningham</a></h5>
-									<p class="date">December 4, 2017 at 3:12 pm </p>
-									<p class="comment">
-										Never say goodbye till the end comes!
-									</p>
-								</div>
-							</div>
-							<div class="reply-btn">
-								<a href="" class="btn-reply text-uppercase">reply</a>
-							</div>
-						</div>
-					</div> -->
+					{% show_reply cid=comment.id %}
+					{% endif %}
 					{% endfor %}
 				</div>
-				<div class="comment-form">
+				{% if request.user.is_authenticated %}
+				<div class="comment-form" id="entercomment">
 					<h4>Leave a Comment</h4>
-					<form action="{% url 'blog:single' pid=post.id %}" method="post">
+					{% if parent %}
+						<form action="{% url 'blog:reply' pid=post.id cid=parent %}" method="post">
 						<div class="form-group form-inline">
 							{% csrf_token %}
+							<input type="hidden" name="parent" value={{parent}}>
 							<input type="hidden" name="post" value={{post.id}}>
-							<div class="form-group col-lg-6 col-md-12 name">
-								<input type="text" class="form-control" name="name" placeholder="Enter Name"
-									onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
-							</div>
-							<div class="form-group col-lg-6 col-md-12 email">
-								<input type="email" class="form-control" name="email" placeholder="Enter email address"
-									onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
-							</div>
+							<input type="hidden" name="name" value="{{request.user.id}}">
+							<input type="hidden" name="email" value="{{request.user.email}}">
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control" name="subject" placeholder="Subject"
@@ -142,7 +123,33 @@
 						</div>
 						<button type="submit" class="primary-btn text-uppercase">Post Comment</button>
 					</form>
+					{% else %}
+					<form action="{% url 'blog:single' pid=post.id %}" method="post">
+						<div class="form-group form-inline">
+							{% csrf_token %}
+							<input type="hidden" name="parent" value=''>
+							<input type="hidden" name="post" value={{post.id}}>
+							<input type="hidden" name="name" value="{{request.user.id}}">
+							<input type="hidden" name="email" value="{{request.user.email}}">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" name="subject" placeholder="Subject"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
+						</div>
+						<div class="form-group">
+							<textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"
+								required=""></textarea>
+						</div>
+						<button type="submit" class="primary-btn text-uppercase">Post Comment</button>
+					</form>
+					{% endif %}
 				</div>
+				{% else %}
+				<form action="{% url 'accounts:login' %}" method="get">
+					<button type="submit" class="primary-btn text-uppercase">Log In</button>
+				</form>
+				{% endif %}
 				<!-- <div class="comments-area">
 					<div id="disqus_thread"></div>
 					<script>

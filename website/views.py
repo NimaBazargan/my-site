@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from website.forms import ContactForm, NewsletterForm
 from django.contrib import messages
@@ -19,7 +19,9 @@ def contact_view(request):
             my_model.save()
             messages.add_message(request,messages.SUCCESS,'success')
         else:
-            messages.add_message(request,messages.ERROR,'error') 
+            for errors in form.errors.values():
+                for error in errors: 
+                    messages.add_message(request,messages.ERROR,f'{error}') 
     else:        
         form = ContactForm()       
     return render(request,'website/contact.html',{'form':form})
@@ -29,9 +31,9 @@ def newsletter_view(request):
         form = NewsletterForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/')
-    else:
-         return HttpResponseRedirect('/')
+            next_url = request.POST.get('next')
+            return redirect(next_url)
+    return redirect(next_url)
 
 # def test_view(request):
 #     if request.method == 'POST':
