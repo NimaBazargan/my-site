@@ -42,7 +42,7 @@
 							{% counted_views pid=post.id as views %}
 							<p class="view col-lg-3 col-sm-6"><a href="#">{{views|intword}} views</a> <span
 									class="lnr lnr-eye"></span></p>
-							<p class="comments col-lg-3 col-sm-6"><a href="#">06 Comments</a> <span
+							<p class="comments col-lg-3 col-sm-6"><a href="{% url 'blog:single' pid=post.id %}#comment">{% comment_count pid=post.id %} Comments</a> <span
 									class="lnr lnr-bubble"></span></p>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 						<div class="single-comment justify-content-between d-flex">
 							<div class="user justify-content-between d-flex">
 								<div class="thumb">
-									<img style="width: 60px;height: 60px;" src="{% static 'img/unknown.jpg' %}" alt="">
+									<img width="60px" height="60px" src="{% static 'img/unknown.jpg' %}" alt="">
 								</div>
 								<div class="desc">
 									<h5><a href="#">{{comment.name.get_full_name}}</a></h5>
@@ -146,7 +146,7 @@
 					{% endif %}
 				</div>
 				{% else %}
-				<form action="{% url 'accounts:login' %}" method="get">
+				<form action="{% url 'login' %}" method="get">
 					<button type="submit" class="primary-btn text-uppercase">Log In</button>
 				</form>
 				{% endif %}

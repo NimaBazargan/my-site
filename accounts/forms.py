@@ -36,7 +36,7 @@ class CustomAuthenticationForm(forms.ModelForm):
         username_email = self.cleaned_data.get('username_email')
         users = User.objects.filter(Q(username=username_email) | Q(email=username_email))
         if not users.exists():
-            raise forms.ValidationError("The user doesn't exist.")
+            raise forms.ValidationError("The user doesn't exist or Password is incorrect.")
         return username_email
     
     # def clean_password(self):

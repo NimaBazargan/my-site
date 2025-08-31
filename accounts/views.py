@@ -23,7 +23,7 @@ def login_view(request):
                     messages.add_message(request,messages.SUCCESS,'success')
                     return redirect('/')
                 else:
-                    messages.add_message(request,messages.ERROR,'Password is incorrect')
+                    messages.add_message(request,messages.ERROR,'The user dose not exist or Password is incorrect')
             else:
                 for errors in form.errors.values():
                     for error in errors:
@@ -48,7 +48,7 @@ def signup_view(request):
             if form.is_valid():
                 form.save()
                 messages.add_message(request,messages.SUCCESS,'success')
-                return redirect('accounts:login')
+                return redirect('login')
             else:
                 for errors in form.errors.values():
                     for error in errors:
@@ -75,7 +75,7 @@ def profile_view(request):
             else:
                 user.save()
             messages.add_message(request,messages.SUCCESS,'success')
-            return redirect('accounts:login')
+            return redirect('login')
         else:
             for errors in form.errors.values():
                 for error in errors:
